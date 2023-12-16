@@ -106,7 +106,3 @@ const preguntas = [
         puntos: 10
       }
   ];
-  
-  let preguntaActual = 0;
-  let puntuacion = 0;
-  

@@ -3,6 +3,7 @@ const Opciones = document.getElementById('opciones');
 const MuestraPun = document.getElementById('puntuacion');
 const MuestraVidas = document.getElementById('vidas');
 const puntajesGuardados = JSON.parse(localStorage.getItem('puntajes')) || [];
+let BtnMenu= document.querySelector("#BtnMenu");
 let vidas = 3;
 let puntuacion = 0;
 let preguntaActual = 0;
@@ -106,5 +107,5 @@ function ReiniciarJuego() {
   preguntaActual = 0;
   MuestraPun.textContent = puntuacion;
 }
-
+BtnMenu.addEventListener("click", MostrarMenu);
 MostrarMenu();

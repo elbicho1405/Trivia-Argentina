@@ -1,60 +1,73 @@
-const Muestrapreg = document.getElementById('pregunta');
-const Opciones = document.getElementById('opciones');
-const MuestraPun = document.getElementById('puntuacion');
-const MuestraVidas = document.getElementById('vidas');
-const puntajesGuardados = JSON.parse(localStorage.getItem('puntajes')) || [];
-let BtnMenu= document.querySelector("#BtnMenu");
-let vidas = 3;
-let puntuacion = 0;
-let preguntaActual = 0;
+const preguntaActual = document.getElementById('pregunta');
+const opciones = document.getElementById('opciones');
+const puntuacion = document.getElementById('puntuacion');
+const vidas = document.getElementById('vidas');
+const btnMenu = document.querySelector("#BtnMenu");
 
-function MostrarPregunta() {
-  const q = preguntas[preguntaActual];
-  Muestrapreg.textContent = q.pregunta;
+let _vidas = 3;
+let _puntuacion = 0;
+let _preguntaActual = 0;
+let minutos;
+let segundos;
+let continuar=true;
 
-  Opciones.innerHTML = '';
-  q.opciones.forEach(opcion => {
+iniciarCronometro();
+function mostrarPregunta() {
+  const pregunta = preguntas[_preguntaActual];
+  preguntaActual.textContent = pregunta.pregunta;
+  
+  opciones.innerHTML = '';
+  pregunta.opciones.forEach(opcion => {
     const boton = document.createElement('button');
     boton.textContent = opcion;
-    boton.onclick = () => VerificarRespuesta(opcion);
-    Opciones.appendChild(boton);
+    boton.onclick = () => verificarRespuesta(opcion);
+    opciones.appendChild(boton);
   });
-  MuestraVidas.textContent = `${vidas}`;
-}
-
-function VerificarRespuesta(respuesta) {
-  const q = preguntas[preguntaActual];
-  if (respuesta === q.respuesta) {
-    if (q.dificultad === "fácil") {
-      puntuacion += 2.5;
-    } else if (q.dificultad === "normal") {
-      puntuacion += 5;
-    } else if (q.dificultad === "difícil") {
-      puntuacion += 10;
+  const intervalId = setInterval(() => {
+    if (!continuar) {
+      clearInterval(intervalId);
+      mostrarTiempoTranscurrido();
+      return;
     }
+    mostrarTiempoTranscurrido();
+  }, 100);
+}
+   
+
+   function verificarRespuesta(respuesta) {
+     const pregunta = preguntas[_preguntaActual];
+     if (respuesta === pregunta.respuesta) {
+       if (pregunta.dificultad === "fácil") {
+         _puntuacion += 2.5;
+        } else if (pregunta.dificultad === "normal") {
+          _puntuacion += 5;
+        } else if (pregunta.dificultad === "difícil") {
+          _puntuacion += 10;
+        }
     Swal.fire('¡Correcto!', 'Respuesta correcta', 'success');
   } else {
-    vidas--;
-    if (vidas === 0) {
-      Swal.fire('¡Incorrecto!', 'Respuesta incorrecta', 'error');
-      setTimeout(() => {FinDelJuego();}, 2000);
-      setTimeout(() => {return;}, 2000);
+    _vidas--;
+    if (_vidas === 0) {
+      Swal.fire('Respuesta incorrecta', `Respuesta Correcta: ${pregunta.respuesta}`, 'error');
+      setTimeout(() => {finDelJuego();}, 1100);
+      return;
     }
-    Swal.fire('¡Incorrecto!', 'Respuesta incorrecta', 'error');
+    Swal.fire('Respuesta incorrecta', `Respuesta Correcta: ${pregunta.respuesta}`, 'error');
   }
-  MuestraPun.textContent = puntuacion;
-  preguntaActual++;
-  if (preguntaActual < preguntas.length) {
-    MostrarPregunta();
+  puntuacion.textContent = _puntuacion;
+  _preguntaActual++;
+  if (_preguntaActual < preguntas.length) {
+    mostrarPregunta();
   } else {
-    FinDelJuego();
+    finDelJuego();
   }
 }
 
-function FinDelJuego() {
+function finDelJuego() {  
+  continuar=false;
   Swal.fire({
     title: '¡Fin del juego!',
-    text: `Puntuación final: ${puntuacion}`,
+    html: `Puntuación final: ${_puntuacion} <br> Tiempo: ${minutos}:${segundos} minutos`,
     input: 'text',
     inputLabel: 'Ingresa tu nombre',
     inputAttributes: {
@@ -65,8 +78,9 @@ function FinDelJuego() {
     showLoaderOnConfirm: true,
     preConfirm: (nombre) => {
       return new Promise(resolve => {
-        puntajesGuardados.push({ nombre, puntuacion });
-        localStorage.setItem('puntajes', JSON.stringify(puntajesGuardados));
+        puntajesGuardados.push({ nombre, puntuacion: _puntuacion, tiempo: `${minutos}:${segundos}` });
+        puntajesGuardados.sort((a, b) => b.puntuacion - a.puntuacion || a.tiempo.localeCompare(b.tiempo));
+        localStorage.setItem(JSON.stringify(Nombrelocal), JSON.stringify(puntajesGuardados));
         resolve();
       });
     },
@@ -76,12 +90,13 @@ function FinDelJuego() {
       Swal.fire('¡Puntuación guardada!', '', 'success');
     }
   });
-  Muestrapreg.innerHTML="";
-  Opciones.innerHTML="";
-  MuestraVidas.textContent = "0";
+  preguntaActual.innerHTML = "";
+  opciones.innerHTML = "";
+  vidas.textContent = "0";
 }
 
-function MostrarMenu() {
+
+function mostrarMenu() {
   Swal.fire({
     title: 'Menú',
     showCancelButton: true,
@@ -89,23 +104,47 @@ function MostrarMenu() {
     cancelButtonText: 'Ver mejores puntajes'
   }).then((result) => {
     if (result.isConfirmed) {
-      ReiniciarJuego(); 
-      MostrarPregunta();
+      reiniciarJuego();
+      mostrarPregunta();
     } else {
-      VerMejoresPuntajes();
+      verMejoresPuntajes();
     }
   });
 }
 
-function VerMejoresPuntajes() {
-  Swal.fire('Los mejores puntajes', `${JSON.stringify(puntajesGuardados)}`, 'info');
+function verMejoresPuntajes() {
+  let puntajesHTML = '<ol>';
+  puntajesGuardados.forEach(puntaje => {
+    puntajesHTML += `<li>${puntaje.nombre} - Puntuación: ${puntaje.puntuacion}, Tiempo: ${puntaje.tiempo}</li>`;
+  });
+  puntajesHTML += '</ol>';
+
+  Swal.fire('Los mejores puntajes', puntajesHTML, 'info');
 }
 
-function ReiniciarJuego() {
-  vidas = 3;
-  puntuacion = 0;
-  preguntaActual = 0;
-  MuestraPun.textContent = puntuacion;
+function reiniciarJuego() {
+  _vidas = 3;
+  _puntuacion = 0;
+  _preguntaActual = 0;
+  puntuacion.textContent = _puntuacion;
+  iniciarCronometro();
+  continuar=true;
 }
-BtnMenu.addEventListener("click", MostrarMenu);
-MostrarMenu();
+
+
+function iniciarCronometro() {
+  tiempoInicio = performance.now();
+}
+
+function mostrarTiempoTranscurrido() {
+  const tiempoActual = performance.now();
+  const tiempoTranscurridoEnSegundos = Math.floor((tiempoActual - tiempoInicio) / 1000);
+  minutos = Math.floor(tiempoTranscurridoEnSegundos / 60);
+  segundos = tiempoTranscurridoEnSegundos % 60;
+  vidas.textContent = `${_vidas} | Tiempo: ${minutos}:${segundos} minutos`;
+}
+  
+
+
+
+btnMenu.addEventListener("click", mostrarMenu);

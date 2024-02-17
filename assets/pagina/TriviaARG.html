@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Trivia Argentina</title>
+  <link rel="stylesheet" href="../css/Juego.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body id="cuerpo">
+  <div class="container mt-5">
+    <h1 class="mb-4" id="titulo">Trivia Argentina</h1>
+    <div class="card">
+      <div class="card-body">
+        <p id="pregunta" class="card-text"></p>
+        <div id="opciones" class="btn-group-vertical mt-4" role="group"></div>
+        <button class="btn btn-primary mt-4" id="BtnMenu">Menu</button>
+        <a href="../../index.html"><button class="btn btn-primary mt-4">Inicio</button></a>
+        <p class="mt-4">Puntuación: <span id="puntuacion">0</span></p>
+        <p>Vidas: <span id="vidas"></span></p>
+      </div>
+    </div>
+  </div>
+  
+
+  <script src="../js/main.js"></script>
+  <script src="../js/PreguntasTriviaARG.js"></script>
+  <script src="../js/PuntajesTriviaARG.js"></script>
+</body>
+</html>

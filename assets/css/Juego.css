@@ -1,0 +1,50 @@
+.container {
+  text-align: center;
+}
+
+
+.card {
+  width: 60%;
+  margin: 0 auto;
+  background-color: #f7f7f7;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+
+#pregunta {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+
+.btn-group-vertical {
+  width: 100%;
+}
+
+.btn-group-vertical button {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.btn-primary {
+  width: 100%;
+}
+
+
+#puntuacion {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+#cuerpo{
+  background-image: url("../imagens/fondo.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed; 
+}
+
+#titulo{
+  color:aliceblue;
+}

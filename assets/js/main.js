@@ -49,7 +49,7 @@ function mostrarPregunta() {
     _vidas--;
     if (_vidas === 0) {
       Swal.fire('Respuesta incorrecta', `Respuesta Correcta: ${pregunta.respuesta}`, 'error');
-      setTimeout(() => {finDelJuego();}, 1100);
+      setTimeout(() => {finDelJuego();}, 1070);
       return;
     }
     Swal.fire('Respuesta incorrecta', `Respuesta Correcta: ${pregunta.respuesta}`, 'error');
@@ -96,31 +96,9 @@ function finDelJuego() {
 }
 
 
-function mostrarMenu() {
-  Swal.fire({
-    title: 'Menú',
-    showCancelButton: true,
-    confirmButtonText: 'Iniciar juego',
-    cancelButtonText: 'Ver mejores puntajes'
-  }).then((result) => {
-    if (result.isConfirmed) {
-      reiniciarJuego();
-      mostrarPregunta();
-    } else {
-      verMejoresPuntajes();
-    }
-  });
-}
 
-function verMejoresPuntajes() {
-  let puntajesHTML = '<ol>';
-  puntajesGuardados.forEach(puntaje => {
-    puntajesHTML += `<li>${puntaje.nombre} - Puntuación: ${puntaje.puntuacion}, Tiempo: ${puntaje.tiempo}</li>`;
-  });
-  puntajesHTML += '</ol>';
 
-  Swal.fire('Los mejores puntajes', puntajesHTML, 'info');
-}
+
 
 function reiniciarJuego() {
   _vidas = 3;
@@ -147,4 +125,3 @@ function mostrarTiempoTranscurrido() {
 
 
 
-btnMenu.addEventListener("click", mostrarMenu);

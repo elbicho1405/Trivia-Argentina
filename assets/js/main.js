@@ -10,6 +10,7 @@ let _preguntaActual = 0;
 let minutos;
 let segundos;
 let continuar=true;
+const puntajesGuardados = JSON.parse(localStorage.getItem(Nombrelocal)) || [];
 
 iniciarCronometro();
 function mostrarPregunta() {
@@ -113,7 +114,6 @@ function mostrarMenu() {
 }
 
 function verMejoresPuntajes() {
-  const puntajesFormateados = JSON.stringify(puntajesGuardados, null, 2);
 
   Swal.fire({
     title: 'Los mejores puntajes',

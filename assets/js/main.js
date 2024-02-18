@@ -10,7 +10,6 @@ let _preguntaActual = 0;
 let minutos;
 let segundos;
 let continuar=true;
-const puntajesGuardados = JSON.parse(localStorage.getItem(Nombrelocal)) || [];
 
 iniciarCronometro();
 function mostrarPregunta() {
@@ -81,7 +80,7 @@ function finDelJuego() {
       return new Promise(resolve => {
         puntajesGuardados.push({ nombre, puntuacion: _puntuacion, tiempo: `${minutos}:${segundos}` });
         puntajesGuardados.sort((a, b) => b.puntuacion - a.puntuacion || a.tiempo.localeCompare(b.tiempo));
-        localStorage.setItem(JSON.stringify(Nombrelocal), JSON.stringify(puntajesGuardados));
+        localStorage.setItem(Nombrelocal, JSON.stringify(puntajesGuardados));
         resolve();
       });
     },

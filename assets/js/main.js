@@ -2,6 +2,7 @@ const preguntaActual = document.getElementById('pregunta');
 const opciones = document.getElementById('opciones');
 const puntuacion = document.getElementById('puntuacion');
 const vidas = document.getElementById('vidas');
+const btnMenu = document.querySelector("#BtnMenu");
 
 let _vidas = 3;
 let _puntuacion = 0;
@@ -95,9 +96,25 @@ function finDelJuego() {
 }
 
 
+function mostrarMenu() {
+  Swal.fire({
+    title: 'Menú',
+    showCancelButton: true,
+    confirmButtonText: 'Iniciar juego',
+    cancelButtonText: 'Ver mejores puntajes'
+  }).then((result) => {
+    if (result.isConfirmed) {
+      reiniciarJuego();
+      mostrarPregunta();
+    } else {
+      verMejoresPuntajes();
+    }
+  });
+}
 
-
-
+function verMejoresPuntajes() {
+  Swal.fire('Los mejores puntajes', `${JSON.stringify(puntajesGuardados)}`, 'info');
+}
 
 function reiniciarJuego() {
   _vidas = 3;
@@ -124,3 +141,4 @@ function mostrarTiempoTranscurrido() {
 
 
 
+btnMenu.addEventListener("click", mostrarMenu);

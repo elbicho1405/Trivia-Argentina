@@ -113,7 +113,39 @@ function mostrarMenu() {
 }
 
 function verMejoresPuntajes() {
-  Swal.fire('Los mejores puntajes', `${JSON.stringify(puntajesGuardados)}`, 'info');
+  const puntajesFormateados = JSON.stringify(puntajesGuardados, null, 2);
+
+  Swal.fire({
+    title: 'Los mejores puntajes',
+    html: `
+      <table>
+        <thead>
+          <tr>
+          <th style="width: 100px;">Posición</th>
+          <th style="width: 150px;">Nombre</th>
+          <th style="width: 100px;">Puntaje</th>
+          <th style="width: 100px;">Tiempo</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${puntajesGuardados.map((puntaje, i) => `
+            <tr>
+              <td>${i + 1}</td>
+              <td>${puntaje.nombre}</td>
+              <td>${puntaje.puntuacion}</td>
+              <td>${puntaje.tiempo}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `,
+    icon: 'info',
+    width: 600,
+    padding: '2em',
+    customClass: {
+      popup: 'swal-puntajes'
+    },
+  });
 }
 
 function reiniciarJuego() {

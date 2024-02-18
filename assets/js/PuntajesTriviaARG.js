@@ -1,15 +1,21 @@
 let Nombrelocal = "PuntajesTriviaARG";
 const CardBody = document.getElementById('CardBody');
 const puntajesGuardados = JSON.parse(localStorage.getItem(Nombrelocal)) || [];
+const btnMenu = document.querySelector("#BtnMenu");
 
 function verMejoresPuntajes() {
-  CardBody.innerHTML = ""; 
+  const CardBody = document.getElementById('CardBody');
+  CardBody.innerHTML = ""; // Limpiar la lista antes de agregar los puntajes
+
   puntajesGuardados.forEach(puntaje => {
-    CardBody.innerHTML += `<li>${puntaje.nombre} - Puntuación: ${puntaje.puntuacion}, Tiempo: ${puntaje.tiempo}</li>`;
+    const listItem = document.createElement('li');
+    listItem.textContent = `${puntaje.nombre} - Puntuación: ${puntaje.puntuacion}, Tiempo: ${puntaje.tiempo}`;
+    CardBody.appendChild(listItem);
   });
 }
 
-function mostrarMenu() {
+function mostrarMenu(event) {
+  event.preventDefault(); 
   Swal.fire({
     title: 'Menú',
     showCancelButton: true,
@@ -20,7 +26,7 @@ function mostrarMenu() {
       reiniciarJuego();
       mostrarPregunta();
     } else {
-      window.location.href = '../pagina/PuntajesARG.html';
+      window.location.href = '../pagina/PuntajesJuego.html';
     }
   });
 }

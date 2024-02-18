@@ -1,14 +1,21 @@
 let Nombrelocal = "PuntajesTriviaJuegos";
 const CardBody = document.getElementById('CardBody');
 const puntajesGuardados = JSON.parse(localStorage.getItem(Nombrelocal)) || [];
+const btnMenu = document.querySelector("#BtnMenu");
+
 
 function verMejoresPuntajes() {
+  console.log("Puntajes guardados:", puntajesGuardados);
   puntajesGuardados.forEach(puntaje => {
-    CardBody.innerHTML += `<li>${puntaje.nombre} - Puntuación: ${puntaje.puntuacion}, Tiempo: ${puntaje.tiempo}</li>`;
+    const listItem = document.createElement('li');
+    listItem.textContent = `${puntaje.nombre} - Puntuación: ${puntaje.puntuacion}, Tiempo: ${puntaje.tiempo}`;
+    CardBody.appendChild(listItem);
   });
 }
 
-function mostrarMenu() {
+
+function mostrarMenu(event) {
+  event.preventDefault(); 
   Swal.fire({
     title: 'Menú',
     showCancelButton: true,
@@ -25,3 +32,4 @@ function mostrarMenu() {
 }
 
 btnMenu.addEventListener("click", mostrarMenu);
+

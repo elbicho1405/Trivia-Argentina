@@ -2,7 +2,6 @@ const preguntaActual = document.getElementById('pregunta');
 const opciones = document.getElementById('opciones');
 const puntuacion = document.getElementById('puntuacion');
 const vidas = document.getElementById('vidas');
-const btnMenu = document.querySelector("#BtnMenu");
 
 let _vidas = 3;
 let _puntuacion = 0;

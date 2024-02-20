@@ -69,7 +69,7 @@ const preguntas = [
       {
         pregunta: "¿Cuál es el plato nacional de Argentina?",
         opciones: ["Milanesa", "Empanada", "Asado", "Locro"],
-        respuesta: "Asado",
+        respuesta: "Locro",
         dificultad: "normal",
       },
       {

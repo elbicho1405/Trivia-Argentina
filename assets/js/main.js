@@ -3,6 +3,7 @@ const opciones = document.getElementById('opciones');
 const puntuacion = document.getElementById('puntuacion');
 const vidas = document.getElementById('vidas');
 const btnMenu = document.querySelector("#BtnMenu");
+const BtnRes=document.querySelector("#opciones");
 
 let _vidas = 3;
 let _puntuacion = 0;
@@ -50,6 +51,7 @@ function mostrarPregunta() {
     if (_vidas === 0) {
       Swal.fire('Respuesta incorrecta', `Respuesta Correcta: ${pregunta.respuesta}`, 'error');
       setTimeout(() => {finDelJuego();}, 1070);
+      BtnRes.style.display="none";
       return;
     }
     Swal.fire('Respuesta incorrecta', `Respuesta Correcta: ${pregunta.respuesta}`, 'error');

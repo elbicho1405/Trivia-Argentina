@@ -52,3 +52,7 @@
 table {
   border-spacing: 10px;
 }
+
+#opciones{
+display: flex;
+}
